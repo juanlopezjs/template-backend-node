@@ -1,0 +1,86 @@
+openapi: '3.0.0'
+info:
+    version: 1.0.0
+    title: Node_template_api
+    description: Api para el microservicios de usuarios
+    termsOfService: http://swagger.io/terms/
+    license:
+        name: Apache 2.0
+        url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+    - url: http://localhost:3000/api
+paths:
+    /users:
+        post:
+            description: Registro de usuarios
+            operationId: createUser
+            requestBody:
+                description: Los datos del usuario a registrar
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+            responses:
+                '200':
+                    description: user response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                default:
+                    description: unexpected error
+                    content: 
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        get:
+            description: Lista los usuarios registrados
+            operationId: getAllUsers
+            responses:
+                '200':
+                    description: user response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                default:
+                    description: unexpected error
+                    content: 
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    
+components:
+    schemas:
+        User:
+            required:
+                - id
+                - firstName
+                - lastName
+            properties:
+                id:
+                    readOnly: true
+                    type: string
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                email:
+                    type: string
+
+        Error:
+            required:
+                - message
+                - error
+            properties:
+                message:
+                    type: string
+                error:
+                    type: boolean
+
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
