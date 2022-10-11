@@ -1,6 +1,6 @@
 const { createLogger, format, transports } = require("winston");
 
-module.exports = () => {
+module.exports = ({ config }) => {
   const enumerateErrorFormat = format((info) => {
     const log = info;
     if (log.level === "error") {
@@ -10,6 +10,9 @@ module.exports = () => {
   });
 
   const logger = createLogger({
+    defaultMeta: {
+      service: config.services.name,
+    },
     transports: [
       new transports.Console({
         level: "debug",

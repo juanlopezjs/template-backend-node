@@ -8,7 +8,7 @@
     "jest:coverage": "jest --collect-coverage",
     "test:watch": "jest --watchAll",
     "start": "pm2 start ecosystem.config.js --watch --env production",
-    "startdev": "pm2 start ecosystem.config.js --watch --env",
+    "startdev": "pm2 start ecosystem.config.js --watch --env development",
     "prepare": "husky install",
     "lintfix": "eslint src --fix --cache"
   },
