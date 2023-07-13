@@ -5,7 +5,7 @@ const config = require("../config");
 const logger = require("./infrastructure/logging/logger");
 const response = require("./interfaces/http/helper/response");
 const database = require("./infrastructure/database");
-const { router, apiRouter } = require("./interfaces/http/server/router");
+const { router } = require("./interfaces/http/server/router");
 const documentation = require("./infrastructure/documentation");
 const { ImportFiles } = require("./infrastructure/tools/importFiles");
 const baseQueriesRepository = require("./domain/baseQueriesRepository");
@@ -18,7 +18,6 @@ container.register({
   app: asFunction(server).singleton(),
   database: asFunction(database).singleton(),
   router: asFunction(router).singleton(),
-  apiRouter: asValue(apiRouter),
   logger: asFunction(logger).singleton(),
   response: asFunction(response).singleton(),
   importFiles: asValue(ImportFiles),
@@ -30,7 +29,7 @@ container.register({
 container.loadModules([
   [
     "src/modules/*/infrastructure/*Route.js",
-    { register: asFunction, lifetime: Lifetime.SINGLETON },
+    { register: asValue },
   ],
   [
     "src/modules/*/infrastructure/*Controller.js",

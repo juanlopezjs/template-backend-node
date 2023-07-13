@@ -5,10 +5,10 @@ const cors = require("cors");
 const errorHandler = require("../middlewares/error_handler");
 const httpLogger = require("../middlewares/http_logger");
 
-const apiRouter = Router();
 const router = (dep) => {
   try {
     const routes = Router();
+    const apiRouter = Router();
     const {
       logger,
       response: { Fail },
@@ -21,10 +21,10 @@ const router = (dep) => {
     Object.keys(dep)
       .filter((reg) => reg.endsWith("Route"))
       .forEach((route) => {
-        apiRouter.use(`/${route.replace("Route", "")}`, dep[route]);
+        const router = dep[route];
+        apiRouter.use(`/${route.replace("Route", "")}`, router({ apiRouter: Router(), ...dep }));
       });
 
-    //  router.use(`/api/${config.version}`, apiRouter)
     routes.use("/api", apiRouter);
 
     routes.use((err, req, res, next) => {
@@ -38,6 +38,5 @@ const router = (dep) => {
   }
 };
 module.exports = {
-  apiRouter,
   router,
 };
